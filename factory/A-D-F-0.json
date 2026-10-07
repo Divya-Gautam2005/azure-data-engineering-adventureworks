@@ -1,0 +1,15 @@
+{
+	"name": "A-D-F-0",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5a804cf9-fbc9-47a9-8f8f-d1976fa07ff9",
+		"tenantId": "ed95c56f-2288-47bc-b77b-c2e4abfbecc0"
+	}
+}
