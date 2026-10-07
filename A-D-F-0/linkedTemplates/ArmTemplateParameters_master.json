@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "A-D-F-0"
+		},
+		"LS_ADLS_accountKey": {
+			"value": ""
+		},
+		"LS_Azure_SQL_password": {
+			"value": ""
+		},
+		"LS_Databricks_accessToken": {
+			"value": ""
+		},
+		"LS_OnPrem_SQL_password": {
+			"value": ""
+		},
+		"LS_ADLS_properties_typeProperties_url": {
+			"value": "https://divya00.dfs.core.windows.net/"
+		},
+		"LS_Azure_SQL_properties_typeProperties_server": {
+			"value": "@{linkedService().ServerName}"
+		},
+		"LS_Azure_SQL_properties_typeProperties_database": {
+			"value": "@{linkedService().DatabaseName}"
+		},
+		"LS_Azure_SQL_properties_typeProperties_userName": {
+			"value": "sqladmin"
+		},
+		"LS_OnPrem_SQL_properties_typeProperties_server": {
+			"value": "@{linkedService().ServerName}"
+		},
+		"LS_OnPrem_SQL_properties_typeProperties_database": {
+			"value": "@{linkedService().DatabaseName}"
+		},
+		"LS_OnPrem_SQL_properties_typeProperties_userName": {
+			"value": "DIVYAGAUTAM\\Divya Gautam"
+		},
+		"LS_REST_API_properties_typeProperties_url": {
+			"value": "https://open.er-api.com"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
