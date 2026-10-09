@@ -54,31 +54,112 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Execute_Child_Pipeline",
-							"type": "ExecutePipeline",
+							"name": "Switch1",
+							"type": "Switch",
 							"dependsOn": [],
-							"policy": {
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"pipeline": {
-									"referenceName": "PL_Child_Copy",
-									"type": "PipelineReference"
+								"on": {
+									"value": "@item().SourceType",
+									"type": "Expression"
 								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"MetadataId": "@string(item().MetadataId)",
-									"SourceType": "@item().SourceType",
-									"ServerName": "@item().ServerName",
-									"DatabaseName": "@item().DatabaseName",
-									"SchemaName": "@item().SchemaName",
-									"SourceTable": "@item().SourceTable",
-									"TargetFolder": "@item().TargetFolder",
-									"LoadType": "@item().LoadType",
-									"WatermarkColumn": "@item().WatermarkColumn",
-									"LastWatermark": "@item().LastWatermark"
-								}
+								"cases": [
+									{
+										"value": "ON_PREM_SQL",
+										"activities": [
+											{
+												"name": "Execute_OnPrem_Child_Pipeline",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "PL_OnPrem_Copy",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"MetadataId": "@string(item().MetadataId)",
+														"ServerName": "@item().ServerName",
+														"DatabaseName": "@item().DatabaseName",
+														"SchemaName": "@item().SchemaName",
+														"SourceTable": "@item().SourceTable",
+														"TargetFolder": {
+															"value": "@item().TargetFolder",
+															"type": "Expression"
+														},
+														"LoadType": "@item().LoadType",
+														"WatermarkColumn": "@item().WatermarkColumn",
+														"LastWatermark": "@string(item().LastWatermark)"
+													}
+												}
+											}
+										]
+									},
+									{
+										"value": "AZURE_SQL",
+										"activities": [
+											{
+												"name": "Execute_Azure_Child_Pipeline",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "PL_AzureSQL_Copy",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"MetadataId": "@string(item().MetadataId)",
+														"ServerName": "@item().ServerName",
+														"DatabaseName": "@item().DatabaseName",
+														"SchemaName": "@item().SchemaName",
+														"SourceTable": "@item().SourceTable",
+														"TargetFolder": "@item().TargetFolde",
+														"LoadType": "@item().LoadType",
+														"WatermarkColumn": "@item().WatermarkColumn",
+														"LastWatermark": "@string(item().LastWatermark)"
+													}
+												}
+											}
+										]
+									},
+									{
+										"value": "REST_API",
+										"activities": [
+											{
+												"name": "Execute_API_Child_Pipeline",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "PL_API_Copy",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"MetadataId": "@string(item().MetadataId)",
+														"SourceEndpoint": "@item().SourceEndpoint",
+														"TargetFolder": "@item().TargetFolde",
+														"LoadType": "@item().LoadType",
+														"LastWatermark": "@string(item().LastWatermark)"
+													}
+												}
+											}
+										]
+									}
+								]
 							}
 						}
 					]

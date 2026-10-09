@@ -1,0 +1,284 @@
+{
+	"name": "PL_OnPrem_Copy",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_OnPrem",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Lookup_LogStart",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": {
+								"value": "@pipeline().parameters.SchemaName",
+								"type": "Expression"
+							},
+							"TableName": {
+								"value": "@pipeline().parameters.SourceTable",
+								"type": "Expression"
+							},
+							"ServerName": {
+								"value": "@pipeline().parameters.ServerName",
+								"type": "Expression"
+							},
+							"DatabaseName": {
+								"value": "@pipeline().parameters.DatabaseName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_Parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"ContainerName": "landing",
+							"FolderPath": {
+								"value": "@concat(\n    pipeline().parameters.TargetFolder,\n    '/year=', formatDateTime(utcNow(),'yyyy'),\n    '/month=', formatDateTime(utcNow(),'MM'),\n    '/day=', formatDateTime(utcNow(),'dd')\n)",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Lookup_LogStart",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n    'EXEC dbo.usp_LogStart ',\n    '@PipelineRunId = ''', pipeline().RunId, ''', ',\n    '@PipelineName = ''PL_OnPrem_Copy'', ',\n    '@MetadataId = ', string(pipeline().parameters.MetadataId),\n    ', @PreviousWatermark = NULL;'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": {
+								"value": "dbo",
+								"type": "Expression"
+							},
+							"ServerName": {
+								"value": "localhost\\SQLEXPRESS",
+								"type": "Expression"
+							},
+							"DatabaseName": {
+								"value": "ADF_Control_DB",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Lookup_Log_Success",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Lookup_GetCurrentWatermark",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@if(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"ServerName": "localhost\\SQLEXPRESS",
+							"DatabaseName": "ADF_Control_DB"
+						}
+					}
+				}
+			},
+			{
+				"name": "Lookup_GetCurrentWatermark",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Copy_OnPrem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "Sales",
+							"TableName": "SalesOrderHeader",
+							"ServerName": "localhost\\SQLEXPRESS",
+							"DatabaseName": "AdventureWorks"
+						}
+					}
+				}
+			},
+			{
+				"name": "Lookup_LogError",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Copy_OnPrem",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_OnPrem failed'';'\n)",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"ServerName": "localhost\\SQLEXPRESS",
+							"DatabaseName": "ADF_Control_DB"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"MetadataId": {
+				"type": "string"
+			},
+			"ServerName": {
+				"type": "string"
+			},
+			"DatabaseName": {
+				"type": "string"
+			},
+			"SchemaName": {
+				"type": "string"
+			},
+			"SourceTable": {
+				"type": "string"
+			},
+			"TargetFolder": {
+				"type": "string"
+			},
+			"LoadType": {
+				"type": "string"
+			},
+			"WatermarkColumn": {
+				"type": "string"
+			},
+			"LastWatermark": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

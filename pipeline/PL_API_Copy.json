@@ -1,0 +1,1622 @@
+{
+	"name": "PL_API_Copy",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_API",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Lookup_LogStart",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['result']"
+								},
+								"sink": {
+									"name": "result"
+								}
+							},
+							{
+								"source": {
+									"path": "$['provider']"
+								},
+								"sink": {
+									"name": "provider"
+								}
+							},
+							{
+								"source": {
+									"path": "$['documentation']"
+								},
+								"sink": {
+									"name": "documentation"
+								}
+							},
+							{
+								"source": {
+									"path": "$['terms_of_use']"
+								},
+								"sink": {
+									"name": "terms_of_use"
+								}
+							},
+							{
+								"source": {
+									"path": "$['time_last_update_unix']"
+								},
+								"sink": {
+									"name": "time_last_update_unix"
+								}
+							},
+							{
+								"source": {
+									"path": "$['time_last_update_utc']"
+								},
+								"sink": {
+									"name": "time_last_update_utc"
+								}
+							},
+							{
+								"source": {
+									"path": "$['time_next_update_unix']"
+								},
+								"sink": {
+									"name": "time_next_update_unix"
+								}
+							},
+							{
+								"source": {
+									"path": "$['time_next_update_utc']"
+								},
+								"sink": {
+									"name": "time_next_update_utc"
+								}
+							},
+							{
+								"source": {
+									"path": "$['time_eol_unix']"
+								},
+								"sink": {
+									"name": "time_eol_unix"
+								}
+							},
+							{
+								"source": {
+									"path": "$['base_code']"
+								},
+								"sink": {
+									"name": "base_code"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['USD']"
+								},
+								"sink": {
+									"name": "USD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AED']"
+								},
+								"sink": {
+									"name": "AED"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AFN']"
+								},
+								"sink": {
+									"name": "AFN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ALL']"
+								},
+								"sink": {
+									"name": "ALL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AMD']"
+								},
+								"sink": {
+									"name": "AMD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ANG']"
+								},
+								"sink": {
+									"name": "ANG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AOA']"
+								},
+								"sink": {
+									"name": "AOA"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ARS']"
+								},
+								"sink": {
+									"name": "ARS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AUD']"
+								},
+								"sink": {
+									"name": "AUD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AWG']"
+								},
+								"sink": {
+									"name": "AWG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['AZN']"
+								},
+								"sink": {
+									"name": "AZN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BAM']"
+								},
+								"sink": {
+									"name": "BAM"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BBD']"
+								},
+								"sink": {
+									"name": "BBD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BDT']"
+								},
+								"sink": {
+									"name": "BDT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BGN']"
+								},
+								"sink": {
+									"name": "BGN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BHD']"
+								},
+								"sink": {
+									"name": "BHD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BIF']"
+								},
+								"sink": {
+									"name": "BIF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BMD']"
+								},
+								"sink": {
+									"name": "BMD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BND']"
+								},
+								"sink": {
+									"name": "BND"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BOB']"
+								},
+								"sink": {
+									"name": "BOB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BRL']"
+								},
+								"sink": {
+									"name": "BRL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BSD']"
+								},
+								"sink": {
+									"name": "BSD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BTN']"
+								},
+								"sink": {
+									"name": "BTN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BWP']"
+								},
+								"sink": {
+									"name": "BWP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BYN']"
+								},
+								"sink": {
+									"name": "BYN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['BZD']"
+								},
+								"sink": {
+									"name": "BZD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CAD']"
+								},
+								"sink": {
+									"name": "CAD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CDF']"
+								},
+								"sink": {
+									"name": "CDF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CHF']"
+								},
+								"sink": {
+									"name": "CHF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CLF']"
+								},
+								"sink": {
+									"name": "CLF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CLP']"
+								},
+								"sink": {
+									"name": "CLP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CNH']"
+								},
+								"sink": {
+									"name": "CNH"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CNY']"
+								},
+								"sink": {
+									"name": "CNY"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['COP']"
+								},
+								"sink": {
+									"name": "COP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CRC']"
+								},
+								"sink": {
+									"name": "CRC"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CUP']"
+								},
+								"sink": {
+									"name": "CUP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CVE']"
+								},
+								"sink": {
+									"name": "CVE"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['CZK']"
+								},
+								"sink": {
+									"name": "CZK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['DJF']"
+								},
+								"sink": {
+									"name": "DJF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['DKK']"
+								},
+								"sink": {
+									"name": "DKK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['DOP']"
+								},
+								"sink": {
+									"name": "DOP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['DZD']"
+								},
+								"sink": {
+									"name": "DZD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['EGP']"
+								},
+								"sink": {
+									"name": "EGP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ERN']"
+								},
+								"sink": {
+									"name": "ERN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ETB']"
+								},
+								"sink": {
+									"name": "ETB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['EUR']"
+								},
+								"sink": {
+									"name": "EUR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['FJD']"
+								},
+								"sink": {
+									"name": "FJD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['FKP']"
+								},
+								"sink": {
+									"name": "FKP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['FOK']"
+								},
+								"sink": {
+									"name": "FOK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GBP']"
+								},
+								"sink": {
+									"name": "GBP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GEL']"
+								},
+								"sink": {
+									"name": "GEL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GGP']"
+								},
+								"sink": {
+									"name": "GGP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GHS']"
+								},
+								"sink": {
+									"name": "GHS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GIP']"
+								},
+								"sink": {
+									"name": "GIP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GMD']"
+								},
+								"sink": {
+									"name": "GMD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GNF']"
+								},
+								"sink": {
+									"name": "GNF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GTQ']"
+								},
+								"sink": {
+									"name": "GTQ"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['GYD']"
+								},
+								"sink": {
+									"name": "GYD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['HKD']"
+								},
+								"sink": {
+									"name": "HKD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['HNL']"
+								},
+								"sink": {
+									"name": "HNL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['HRK']"
+								},
+								"sink": {
+									"name": "HRK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['HTG']"
+								},
+								"sink": {
+									"name": "HTG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['HUF']"
+								},
+								"sink": {
+									"name": "HUF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['IDR']"
+								},
+								"sink": {
+									"name": "IDR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ILS']"
+								},
+								"sink": {
+									"name": "ILS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['IMP']"
+								},
+								"sink": {
+									"name": "IMP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['INR']"
+								},
+								"sink": {
+									"name": "INR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['IQD']"
+								},
+								"sink": {
+									"name": "IQD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['IRR']"
+								},
+								"sink": {
+									"name": "IRR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ISK']"
+								},
+								"sink": {
+									"name": "ISK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['JEP']"
+								},
+								"sink": {
+									"name": "JEP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['JMD']"
+								},
+								"sink": {
+									"name": "JMD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['JOD']"
+								},
+								"sink": {
+									"name": "JOD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['JPY']"
+								},
+								"sink": {
+									"name": "JPY"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KES']"
+								},
+								"sink": {
+									"name": "KES"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KGS']"
+								},
+								"sink": {
+									"name": "KGS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KHR']"
+								},
+								"sink": {
+									"name": "KHR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KID']"
+								},
+								"sink": {
+									"name": "KID"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KMF']"
+								},
+								"sink": {
+									"name": "KMF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KRW']"
+								},
+								"sink": {
+									"name": "KRW"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KWD']"
+								},
+								"sink": {
+									"name": "KWD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KYD']"
+								},
+								"sink": {
+									"name": "KYD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['KZT']"
+								},
+								"sink": {
+									"name": "KZT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['LAK']"
+								},
+								"sink": {
+									"name": "LAK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['LBP']"
+								},
+								"sink": {
+									"name": "LBP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['LKR']"
+								},
+								"sink": {
+									"name": "LKR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['LRD']"
+								},
+								"sink": {
+									"name": "LRD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['LSL']"
+								},
+								"sink": {
+									"name": "LSL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['LYD']"
+								},
+								"sink": {
+									"name": "LYD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MAD']"
+								},
+								"sink": {
+									"name": "MAD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MDL']"
+								},
+								"sink": {
+									"name": "MDL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MGA']"
+								},
+								"sink": {
+									"name": "MGA"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MKD']"
+								},
+								"sink": {
+									"name": "MKD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MMK']"
+								},
+								"sink": {
+									"name": "MMK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MNT']"
+								},
+								"sink": {
+									"name": "MNT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MOP']"
+								},
+								"sink": {
+									"name": "MOP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MRU']"
+								},
+								"sink": {
+									"name": "MRU"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MUR']"
+								},
+								"sink": {
+									"name": "MUR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MVR']"
+								},
+								"sink": {
+									"name": "MVR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MWK']"
+								},
+								"sink": {
+									"name": "MWK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MXN']"
+								},
+								"sink": {
+									"name": "MXN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MYR']"
+								},
+								"sink": {
+									"name": "MYR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['MZN']"
+								},
+								"sink": {
+									"name": "MZN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['NAD']"
+								},
+								"sink": {
+									"name": "NAD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['NGN']"
+								},
+								"sink": {
+									"name": "NGN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['NIO']"
+								},
+								"sink": {
+									"name": "NIO"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['NOK']"
+								},
+								"sink": {
+									"name": "NOK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['NPR']"
+								},
+								"sink": {
+									"name": "NPR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['NZD']"
+								},
+								"sink": {
+									"name": "NZD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['OMR']"
+								},
+								"sink": {
+									"name": "OMR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PAB']"
+								},
+								"sink": {
+									"name": "PAB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PEN']"
+								},
+								"sink": {
+									"name": "PEN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PGK']"
+								},
+								"sink": {
+									"name": "PGK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PHP']"
+								},
+								"sink": {
+									"name": "PHP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PKR']"
+								},
+								"sink": {
+									"name": "PKR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PLN']"
+								},
+								"sink": {
+									"name": "PLN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['PYG']"
+								},
+								"sink": {
+									"name": "PYG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['QAR']"
+								},
+								"sink": {
+									"name": "QAR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['RON']"
+								},
+								"sink": {
+									"name": "RON"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['RSD']"
+								},
+								"sink": {
+									"name": "RSD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['RUB']"
+								},
+								"sink": {
+									"name": "RUB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['RWF']"
+								},
+								"sink": {
+									"name": "RWF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SAR']"
+								},
+								"sink": {
+									"name": "SAR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SBD']"
+								},
+								"sink": {
+									"name": "SBD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SCR']"
+								},
+								"sink": {
+									"name": "SCR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SDG']"
+								},
+								"sink": {
+									"name": "SDG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SEK']"
+								},
+								"sink": {
+									"name": "SEK"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SGD']"
+								},
+								"sink": {
+									"name": "SGD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SHP']"
+								},
+								"sink": {
+									"name": "SHP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SLE']"
+								},
+								"sink": {
+									"name": "SLE"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SLL']"
+								},
+								"sink": {
+									"name": "SLL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SOS']"
+								},
+								"sink": {
+									"name": "SOS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SRD']"
+								},
+								"sink": {
+									"name": "SRD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SSP']"
+								},
+								"sink": {
+									"name": "SSP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['STN']"
+								},
+								"sink": {
+									"name": "STN"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SYP']"
+								},
+								"sink": {
+									"name": "SYP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['SZL']"
+								},
+								"sink": {
+									"name": "SZL"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['THB']"
+								},
+								"sink": {
+									"name": "THB"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TJS']"
+								},
+								"sink": {
+									"name": "TJS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TMT']"
+								},
+								"sink": {
+									"name": "TMT"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TND']"
+								},
+								"sink": {
+									"name": "TND"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TOP']"
+								},
+								"sink": {
+									"name": "TOP"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TRY']"
+								},
+								"sink": {
+									"name": "TRY"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TTD']"
+								},
+								"sink": {
+									"name": "TTD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TVD']"
+								},
+								"sink": {
+									"name": "TVD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TWD']"
+								},
+								"sink": {
+									"name": "TWD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['TZS']"
+								},
+								"sink": {
+									"name": "TZS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['UAH']"
+								},
+								"sink": {
+									"name": "UAH"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['UGX']"
+								},
+								"sink": {
+									"name": "UGX"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['UYU']"
+								},
+								"sink": {
+									"name": "UYU"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['UZS']"
+								},
+								"sink": {
+									"name": "UZS"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['VES']"
+								},
+								"sink": {
+									"name": "VES"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['VND']"
+								},
+								"sink": {
+									"name": "VND"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['VUV']"
+								},
+								"sink": {
+									"name": "VUV"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['WST']"
+								},
+								"sink": {
+									"name": "WST"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['XAF']"
+								},
+								"sink": {
+									"name": "XAF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['XCD']"
+								},
+								"sink": {
+									"name": "XCD"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['XCG']"
+								},
+								"sink": {
+									"name": "XCG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['XDR']"
+								},
+								"sink": {
+									"name": "XDR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['XOF']"
+								},
+								"sink": {
+									"name": "XOF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['XPF']"
+								},
+								"sink": {
+									"name": "XPF"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['YER']"
+								},
+								"sink": {
+									"name": "YER"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ZAR']"
+								},
+								"sink": {
+									"name": "ZAR"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ZMW']"
+								},
+								"sink": {
+									"name": "ZMW"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ZWG']"
+								},
+								"sink": {
+									"name": "ZWG"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rates']['ZWL']"
+								},
+								"sink": {
+									"name": "ZWL"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_REST_API",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_Parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"ContainerName": "landing",
+							"FolderPath": {
+								"value": "@concat(\r\n    pipeline().parameters.TargetFolder,\r\n    '/year=', formatDateTime(utcNow(),'yyyy'),\r\n    '/month=', formatDateTime(utcNow(),'MM'),\r\n    '/day=', formatDateTime(utcNow(),'dd')\r\n)",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@concat('exchange_rates_',pipeline().RunId,'.parquet')",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "Lookup_LogError",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Copy_API",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_API failed'';'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"ServerName": "localhost\\SQLEXPRESS",
+							"DatabaseName": "ADF_Control_DB"
+						}
+					}
+				}
+			},
+			{
+				"name": "Lookup_Log_Success",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Copy_API",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_API').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_API').output.rowsCopied),';'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"ServerName": "localhost\\SQLEXPRESS",
+							"DatabaseName": "ADF_Control_DB"
+						}
+					}
+				}
+			},
+			{
+				"name": "Lookup_LogStart",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_API_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_OnPrem_SQL",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": {
+								"value": "dbo",
+								"type": "Expression"
+							},
+							"ServerName": {
+								"value": "localhost\\SQLEXPRESS",
+								"type": "Expression"
+							},
+							"DatabaseName": {
+								"value": "ADF_Control_DB",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"MetadataId": {
+				"type": "string"
+			},
+			"SourceEndpoint": {
+				"type": "string"
+			},
+			"TargetFolder": {
+				"type": "string"
+			},
+			"LoadType": {
+				"type": "string"
+			},
+			"LastWatermark": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
