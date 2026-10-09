@@ -2000,7 +2000,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "EXEC dbo.usp_GetConfig;",
+								"sqlReaderQuery": "EXEC dbo.usp_GetConfig @SequenceNo = 3;",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -2339,7 +2339,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "@concat(\n    'EXEC dbo.usp_LogStart ',\n    '@PipelineRunId = ''', pipeline().RunId, ''', ',\n    '@PipelineName = ''PL_OnPrem_Copy'', ',\n    '@MetadataId = ', string(pipeline().parameters.MetadataId),\n    ', @PreviousWatermark = NULL;'\n)",
+									"value": "@concat(\n'EXEC dbo.usp_LogStart @PipelineRunId = ''',\npipeline().RunId,\n''', @PipelineName = ''PL_OnPrem_Copy'', @MetadataId = ',\nstring(pipeline().parameters.MetadataId),\n', @PreviousWatermark = ',\nif(\n    empty(pipeline().parameters.LastWatermark),\n    'NULL',\n    concat('''', string(pipeline().parameters.LastWatermark), '''')\n),\n';'\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
