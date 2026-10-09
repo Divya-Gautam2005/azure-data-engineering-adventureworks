@@ -122,7 +122,10 @@
 														"DatabaseName": "@item().DatabaseName",
 														"SchemaName": "@item().SchemaName",
 														"SourceTable": "@item().SourceTable",
-														"TargetFolder": "@item().TargetFolde",
+														"TargetFolder": {
+															"value": "@item().TargetFolder",
+															"type": "Expression"
+														},
 														"LoadType": "@item().LoadType",
 														"WatermarkColumn": "@item().WatermarkColumn",
 														"LastWatermark": "@string(item().LastWatermark)"
@@ -151,7 +154,10 @@
 													"parameters": {
 														"MetadataId": "@string(item().MetadataId)",
 														"SourceEndpoint": "@item().SourceEndpoint",
-														"TargetFolder": "@item().TargetFolde",
+														"TargetFolder": {
+															"value": "@item().TargetFolder",
+															"type": "Expression"
+														},
 														"LoadType": "@item().LoadType",
 														"LastWatermark": "@string(item().LastWatermark)"
 													}
