@@ -108,7 +108,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'EXEC dbo.usp_LogStart @PipelineRunId = ''',\npipeline().RunId,\n''', @PipelineName = ''PL_OnPrem_Copy'', @MetadataId = ',\nstring(pipeline().parameters.MetadataId),\n', @PreviousWatermark = ',\nif(\n    empty(pipeline().parameters.LastWatermark),\n    'NULL',\n    concat('''', string(pipeline().parameters.LastWatermark), '''')\n),\n';'\n)",
+							"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_OnPrem_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ',\nif(\n  empty(pipeline().parameters.LastWatermark),\n  'NULL',\n  concat('''',string(pipeline().parameters.LastWatermark),'''')\n),\n';'\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -157,7 +157,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@if(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n)",
+							"value": "@concat(\n'EXEC dbo.usp_LogEnd @ProcessLogId = ',\nstring(activity('Lookup_LogStart').output.firstRow.ProcessLogId),\n', @Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_OnPrem').output.rowsRead),\n', @RowsWritten = ',string(activity('Copy_OnPrem').output.rowsCopied),\n', @CurrentWatermark = ',\nif(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n),\n';'\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
