@@ -17,10 +17,12 @@
 		},
 		"parameters": {
 			"SchemaName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Sales"
 			},
 			"TableName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Customer"
 			},
 			"ServerName": {
 				"type": "string",
