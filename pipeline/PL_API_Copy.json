@@ -1540,7 +1540,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_API').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_API').output.rowsCopied),';'\n)",
+							"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_API').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_API').output.rowsCopied),'; ',\n'SELECT 1 AS Success;'\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -1551,6 +1551,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
+							"TableName": "SalesOrderHeader",
 							"ServerName": "localhost\\SQLEXPRESS",
 							"DatabaseName": "ADF_Control_DB"
 						}

@@ -24,7 +24,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+						"sqlReaderQuery": {
+							"value": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -98,7 +101,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_AzureSQL_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_AzureSQL_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -106,10 +112,9 @@
 						"referenceName": "DS_OnPrem_SQL",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "Sales",
-							"TableName": "SalesOrderHeader",
+							"SchemaName": "dbo",
 							"ServerName": "localhost\\SQLEXPRESS",
-							"DatabaseName": "AdventureWorks"
+							"DatabaseName": "ADF_Control_DB"
 						}
 					}
 				}
@@ -136,7 +141,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -174,7 +182,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_Azure').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_Azure').output.rowsCopied),', ',\n'@CurrentWatermark = ',\nif(\nempty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n'NULL',\nconcat('''',string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),'''')\n)\n)",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_Azure').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_Azure').output.rowsCopied),', ',\n'@CurrentWatermark = ',\nif(\nempty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n'NULL',\nconcat('''',string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),'''')\n)\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},

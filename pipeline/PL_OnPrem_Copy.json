@@ -24,7 +24,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+						"sqlReaderQuery": {
+							"value": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -165,6 +168,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
+							"TableName": "SalesOrderHeader",
 							"ServerName": "localhost\\SQLEXPRESS",
 							"DatabaseName": "ADF_Control_DB"
 						}
@@ -234,7 +238,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_OnPrem failed'';'\n)",
+						"sqlReaderQuery": {
+							"value": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_OnPrem failed'';'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
