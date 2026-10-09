@@ -198,7 +198,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+							"value": "@if(\n    empty(pipeline().parameters.WatermarkColumn),\n    'SELECT CAST(NULL AS DATETIME2) AS CurrentWatermark',\n    concat(\n        'SELECT MAX([', pipeline().parameters.WatermarkColumn,\n        ']) AS CurrentWatermark FROM [',\n        pipeline().parameters.SchemaName, '].[',\n        pipeline().parameters.SourceTable, ']'\n    )\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
