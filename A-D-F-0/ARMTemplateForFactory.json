@@ -61,1067 +61,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/DS_ADLS_Parquet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_ADLS",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"ContainerName": {
-						"type": "string"
-					},
-					"FolderPath": {
-						"type": "string"
-					},
-					"FileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().FileName",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().FolderPath",
-							"type": "Expression"
-						},
-						"fileSystem": {
-							"value": "@dataset().ContainerName",
-							"type": "Expression"
-						}
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_ADLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_Azure_SQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_Azure_SQL",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"ServerName": {
-							"value": "@dataset().ServerName",
-							"type": "Expression"
-						},
-						"DatabaseName": {
-							"value": "@dataset().DatabaseName",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"SchemaName": {
-						"type": "string",
-						"defaultValue": "Sales"
-					},
-					"TableName": {
-						"type": "string",
-						"defaultValue": "Customer"
-					},
-					"ServerName": {
-						"type": "string",
-						"defaultValue": "azure-sql-0.database.windows.net"
-					},
-					"DatabaseName": {
-						"type": "string",
-						"defaultValue": "AdventureWorksAzure"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_SQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_OnPrem_SQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_OnPrem_SQL",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"ServerName": {
-							"value": "@dataset().ServerName",
-							"type": "Expression"
-						},
-						"DatabaseName": {
-							"value": "@dataset().DatabaseName",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"SchemaName": {
-						"type": "string",
-						"defaultValue": "Sales"
-					},
-					"TableName": {
-						"type": "string",
-						"defaultValue": "SalesOrderHeader"
-					},
-					"ServerName": {
-						"type": "string",
-						"defaultValue": "localhost\\SQLEXPRESS"
-					},
-					"DatabaseName": {
-						"type": "string",
-						"defaultValue": "AdventureWorks"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_OnPrem_SQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_ADLS')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('LS_ADLS_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('LS_ADLS_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Azure_SQL')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"ServerName": {
-						"type": "string",
-						"defaultValue": "azure-sql-0.database.windows.net"
-					},
-					"DatabaseName": {
-						"type": "string",
-						"defaultValue": "AdventureWorksAzure"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('LS_Azure_SQL_properties_typeProperties_server')]",
-					"database": "[parameters('LS_Azure_SQL_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "SQL",
-					"userName": "[parameters('LS_Azure_SQL_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('LS_Azure_SQL_password')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_Databricks')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureDatabricks",
-				"typeProperties": {
-					"domain": "https://adb-7405618921933038.18.azuredatabricks.net",
-					"accessToken": {
-						"type": "SecureString",
-						"value": "[parameters('LS_Databricks_accessToken')]"
-					},
-					"newClusterNodeType": "Standard_D4s_v3",
-					"newClusterNumOfWorker": "1",
-					"newClusterSparkEnvVars": {
-						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
-					},
-					"newClusterVersion": "18.x-scala2.13",
-					"clusterOption": "Fixed",
-					"newClusterInitScripts": []
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_OnPrem_SQL')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"parameters": {
-					"ServerName": {
-						"type": "string",
-						"defaultValue": "localhost\\SQLEXPRESS"
-					},
-					"DatabaseName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"server": "[parameters('LS_OnPrem_SQL_properties_typeProperties_server')]",
-					"database": "[parameters('LS_OnPrem_SQL_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": true,
-					"authenticationType": "Windows",
-					"userName": "[parameters('LS_OnPrem_SQL_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('LS_OnPrem_SQL_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "SHIR",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LS_REST_API')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "RestService",
-				"typeProperties": {
-					"url": "[parameters('LS_REST_API_properties_typeProperties_url')]",
-					"enableServerCertificateValidation": true,
-					"authenticationType": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SHIR')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_Master')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup_Config",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "EXEC dbo.usp_GetConfig;",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "dbo",
-									"TableName": "MetadataConfig",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "ADF_Control_DB"
-								}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "ForEach_config",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Lookup_Config",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Lookup_Config').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Switch1",
-									"type": "Switch",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"on": {
-											"value": "@item().SourceType",
-											"type": "Expression"
-										},
-										"cases": [
-											{
-												"value": "ON_PREM_SQL",
-												"activities": [
-													{
-														"name": "Execute_OnPrem_Child_Pipeline",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "PL_OnPrem_Copy",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {
-																"MetadataId": "@string(item().MetadataId)",
-																"ServerName": "@item().ServerName",
-																"DatabaseName": "@item().DatabaseName",
-																"SchemaName": "@item().SchemaName",
-																"SourceTable": "@item().SourceTable",
-																"TargetFolder": {
-																	"value": "@item().TargetFolder",
-																	"type": "Expression"
-																},
-																"LoadType": "@item().LoadType",
-																"WatermarkColumn": "@item().WatermarkColumn",
-																"LastWatermark": "@string(item().LastWatermark)"
-															}
-														}
-													}
-												]
-											},
-											{
-												"value": "AZURE_SQL",
-												"activities": [
-													{
-														"name": "Execute_Azure_Child_Pipeline",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "PL_AzureSQL_Copy",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {
-																"MetadataId": "@string(item().MetadataId)",
-																"ServerName": "@item().ServerName",
-																"DatabaseName": "@item().DatabaseName",
-																"SchemaName": "@item().SchemaName",
-																"SourceTable": "@item().SourceTable",
-																"TargetFolder": "@item().TargetFolde",
-																"LoadType": "@item().LoadType",
-																"WatermarkColumn": "@item().WatermarkColumn",
-																"LastWatermark": "@string(item().LastWatermark)"
-															}
-														}
-													}
-												]
-											},
-											{
-												"value": "REST_API",
-												"activities": [
-													{
-														"name": "Execute_API_Child_Pipeline",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "PL_API_Copy",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {
-																"MetadataId": "@string(item().MetadataId)",
-																"SourceEndpoint": "@item().SourceEndpoint",
-																"TargetFolder": "@item().TargetFolde",
-																"LoadType": "@item().LoadType",
-																"LastWatermark": "@string(item().LastWatermark)"
-															}
-														}
-													}
-												]
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_OnPrem_Copy')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_AzureSQL_Copy')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_API_Copy')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DS_REST_API')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LS_REST_API",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "RestResource",
-				"typeProperties": {
-					"relativeUrl": "/v6/latest/USD"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/LS_REST_API')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_OnPrem_Copy')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_OnPrem",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Lookup_LogStart",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": {
-										"value": "@pipeline().parameters.SchemaName",
-										"type": "Expression"
-									},
-									"TableName": {
-										"value": "@pipeline().parameters.SourceTable",
-										"type": "Expression"
-									},
-									"ServerName": {
-										"value": "@pipeline().parameters.ServerName",
-										"type": "Expression"
-									},
-									"DatabaseName": {
-										"value": "@pipeline().parameters.DatabaseName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ADLS_Parquet",
-								"type": "DatasetReference",
-								"parameters": {
-									"ContainerName": "landing",
-									"FolderPath": {
-										"value": "@concat(\n    pipeline().parameters.TargetFolder,\n    '/year=', formatDateTime(utcNow(),'yyyy'),\n    '/month=', formatDateTime(utcNow(),'MM'),\n    '/day=', formatDateTime(utcNow(),'dd')\n)",
-										"type": "Expression"
-									},
-									"FileName": {
-										"value": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')",
-										"type": "Expression"
-									}
-								}
-							}
-						]
-					},
-					{
-						"name": "Lookup_LogStart",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "@concat(\n    'EXEC dbo.usp_LogStart ',\n    '@PipelineRunId = ''', pipeline().RunId, ''', ',\n    '@PipelineName = ''PL_OnPrem_Copy'', ',\n    '@MetadataId = ', string(pipeline().parameters.MetadataId),\n    ', @PreviousWatermark = NULL;'\n)",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": {
-										"value": "dbo",
-										"type": "Expression"
-									},
-									"ServerName": {
-										"value": "localhost\\SQLEXPRESS",
-										"type": "Expression"
-									},
-									"DatabaseName": {
-										"value": "ADF_Control_DB",
-										"type": "Expression"
-									}
-								}
-							}
-						}
-					},
-					{
-						"name": "Lookup_Log_Success",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Lookup_GetCurrentWatermark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "@if(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n)",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "dbo",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "ADF_Control_DB"
-								}
-							}
-						}
-					},
-					{
-						"name": "Lookup_GetCurrentWatermark",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Copy_OnPrem",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "Sales",
-									"TableName": "SalesOrderHeader",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "AdventureWorks"
-								}
-							}
-						}
-					},
-					{
-						"name": "Lookup_LogError",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Copy_OnPrem",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_OnPrem failed'';'\n)",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "dbo",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "ADF_Control_DB"
-								}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"MetadataId": {
-						"type": "string"
-					},
-					"ServerName": {
-						"type": "string"
-					},
-					"DatabaseName": {
-						"type": "string"
-					},
-					"SchemaName": {
-						"type": "string"
-					},
-					"SourceTable": {
-						"type": "string"
-					},
-					"TargetFolder": {
-						"type": "string"
-					},
-					"LoadType": {
-						"type": "string"
-					},
-					"WatermarkColumn": {
-						"type": "string"
-					},
-					"LastWatermark": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ADLS_Parquet')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/PL_AzureSQL_Copy')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy_Azure",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Lookup_LogStart",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "DS_Azure_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": {
-										"value": "@pipeline().parameters.SchemaName",
-										"type": "Expression"
-									},
-									"TableName": {
-										"value": "@pipeline().parameters.SourceTable",
-										"type": "Expression"
-									},
-									"ServerName": {
-										"value": "@pipeline().parameters.ServerName",
-										"type": "Expression"
-									},
-									"DatabaseName": {
-										"value": "@pipeline().parameters.DatabaseName",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DS_ADLS_Parquet",
-								"type": "DatasetReference",
-								"parameters": {
-									"ContainerName": "landing",
-									"FolderPath": "@concat(     pipeline().parameters.TargetFolder,     '/year=', formatDateTime(utcNow(),'yyyy'),     '/month=', formatDateTime(utcNow(),'MM'),     '/day=', formatDateTime(utcNow(),'dd') )",
-									"FileName": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')"
-								}
-							}
-						]
-					},
-					{
-						"name": "Lookup_LogStart",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_AzureSQL_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "Sales",
-									"TableName": "SalesOrderHeader",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "AdventureWorks"
-								}
-							}
-						}
-					},
-					{
-						"name": "Lookup_GetCurrentWatermark",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Copy_Azure",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_Azure_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "Sales",
-									"TableName": "Customer",
-									"ServerName": "azure-sql-0.database.windows.net",
-									"DatabaseName": "AdventureWorksAzure"
-								}
-							}
-						}
-					},
-					{
-						"name": "Lookup_Log_Success",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Lookup_GetCurrentWatermark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_Azure').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_Azure').output.rowsCopied),', ',\n'@CurrentWatermark = ',\nif(\nempty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n'NULL',\nconcat('''',string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),'''')\n)\n)",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "dbo",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "ADF_Control_DB"
-								}
-							}
-						}
-					},
-					{
-						"name": "Lookup_LogError",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Copy_Azure",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "SqlServerSource",
-								"sqlReaderQuery": {
-									"value": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_Azure failed'';'\n)",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "DS_OnPrem_SQL",
-								"type": "DatasetReference",
-								"parameters": {
-									"SchemaName": "dbo",
-									"ServerName": "localhost\\SQLEXPRESS",
-									"DatabaseName": "ADF_Control_DB"
-								}
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"MetadataId": {
-						"type": "string"
-					},
-					"ServerName": {
-						"type": "string"
-					},
-					"DatabaseName": {
-						"type": "string"
-					},
-					"SchemaName": {
-						"type": "string"
-					},
-					"SourceTable": {
-						"type": "string"
-					},
-					"TargetFolder": {
-						"type": "string"
-					},
-					"LoadType": {
-						"type": "string"
-					},
-					"WatermarkColumn": {
-						"type": "string"
-					},
-					"LastWatermark": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_Azure_SQL')]",
-				"[concat(variables('factoryId'), '/datasets/DS_ADLS_Parquet')]",
-				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/PL_API_Copy')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2666,7 +1605,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_API').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_API').output.rowsCopied),';'\n)",
+									"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_API').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_API').output.rowsCopied),'; ',\n'SELECT 1 AS Success;'\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2677,6 +1616,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
+									"TableName": "SalesOrderHeader",
 									"ServerName": "localhost\\SQLEXPRESS",
 									"DatabaseName": "ADF_Control_DB"
 								}
@@ -2753,6 +1693,1151 @@
 				"[concat(variables('factoryId'), '/datasets/DS_ADLS_Parquet')]",
 				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_AzureSQL_Copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_Azure",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Lookup_LogStart",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_Azure_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": {
+										"value": "@pipeline().parameters.SchemaName",
+										"type": "Expression"
+									},
+									"TableName": {
+										"value": "@pipeline().parameters.SourceTable",
+										"type": "Expression"
+									},
+									"ServerName": {
+										"value": "@pipeline().parameters.ServerName",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "@pipeline().parameters.DatabaseName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_ADLS_Parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"ContainerName": "landing",
+									"FolderPath": "@concat(     pipeline().parameters.TargetFolder,     '/year=', formatDateTime(utcNow(),'yyyy'),     '/month=', formatDateTime(utcNow(),'MM'),     '/day=', formatDateTime(utcNow(),'dd') )",
+									"FileName": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')"
+								}
+							}
+						]
+					},
+					{
+						"name": "Lookup_LogStart",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_AzureSQL_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "dbo",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "ADF_Control_DB"
+								}
+							}
+						}
+					},
+					{
+						"name": "Lookup_GetCurrentWatermark",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy_Azure",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_Azure_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "Sales",
+									"TableName": "Customer",
+									"ServerName": "azure-sql-0.database.windows.net",
+									"DatabaseName": "AdventureWorksAzure"
+								}
+							}
+						}
+					},
+					{
+						"name": "Lookup_Log_Success",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Lookup_GetCurrentWatermark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n'EXEC dbo.usp_LogEnd ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_Azure').output.rowsRead),', ',\n'@RowsWritten = ',string(activity('Copy_Azure').output.rowsCopied),', ',\n'@CurrentWatermark = ',\nif(\nempty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n'NULL',\nconcat('''',string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),'''')\n)\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "dbo",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "ADF_Control_DB"
+								}
+							}
+						}
+					},
+					{
+						"name": "Lookup_LogError",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy_Azure",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_Azure failed'';'\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "dbo",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "ADF_Control_DB"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"MetadataId": {
+						"type": "string"
+					},
+					"ServerName": {
+						"type": "string"
+					},
+					"DatabaseName": {
+						"type": "string"
+					},
+					"SchemaName": {
+						"type": "string"
+					},
+					"SourceTable": {
+						"type": "string"
+					},
+					"TargetFolder": {
+						"type": "string"
+					},
+					"LoadType": {
+						"type": "string"
+					},
+					"WatermarkColumn": {
+						"type": "string"
+					},
+					"LastWatermark": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_Azure_SQL')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ADLS_Parquet')]",
+				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_Master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup_Config",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "EXEC dbo.usp_GetConfig;",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "dbo",
+									"TableName": "MetadataConfig",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "ADF_Control_DB"
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach_config",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup_Config",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup_Config').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Switch1",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().SourceType",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "ON_PREM_SQL",
+												"activities": [
+													{
+														"name": "Execute_OnPrem_Child_Pipeline",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "PL_OnPrem_Copy",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"MetadataId": {
+																	"value": "@string(item().MetadataId)",
+																	"type": "Expression"
+																},
+																"ServerName": {
+																	"value": "@item().ServerName",
+																	"type": "Expression"
+																},
+																"DatabaseName": {
+																	"value": "@item().DatabaseName",
+																	"type": "Expression"
+																},
+																"SchemaName": {
+																	"value": "@item().SchemaName",
+																	"type": "Expression"
+																},
+																"SourceTable": {
+																	"value": "@item().SourceTable",
+																	"type": "Expression"
+																},
+																"TargetFolder": {
+																	"value": "@item().TargetFolder",
+																	"type": "Expression"
+																},
+																"LoadType": {
+																	"value": "@item().LoadType",
+																	"type": "Expression"
+																},
+																"WatermarkColumn": {
+																	"value": "@item().WatermarkColumn",
+																	"type": "Expression"
+																},
+																"LastWatermark": {
+																	"value": "@string(item().LastWatermark)",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											},
+											{
+												"value": "AZURE_SQL",
+												"activities": [
+													{
+														"name": "Execute_Azure_Child_Pipeline",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "PL_AzureSQL_Copy",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"MetadataId": {
+																	"value": "@string(item().MetadataId)",
+																	"type": "Expression"
+																},
+																"ServerName": {
+																	"value": "@item().ServerName",
+																	"type": "Expression"
+																},
+																"DatabaseName": {
+																	"value": "@item().DatabaseName",
+																	"type": "Expression"
+																},
+																"SchemaName": {
+																	"value": "@item().SchemaName",
+																	"type": "Expression"
+																},
+																"SourceTable": {
+																	"value": "@item().SourceTable",
+																	"type": "Expression"
+																},
+																"TargetFolder": {
+																	"value": "@item().TargetFolder",
+																	"type": "Expression"
+																},
+																"LoadType": {
+																	"value": "@item().LoadType",
+																	"type": "Expression"
+																},
+																"WatermarkColumn": {
+																	"value": "@item().WatermarkColumn",
+																	"type": "Expression"
+																},
+																"LastWatermark": {
+																	"value": "@string(item().LastWatermark)",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											},
+											{
+												"value": "REST_API",
+												"activities": [
+													{
+														"name": "Execute_API_Child_Pipeline",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "PL_API_Copy",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"MetadataId": {
+																	"value": "@string(item().MetadataId)",
+																	"type": "Expression"
+																},
+																"SourceEndpoint": {
+																	"value": "@item().SourceEndpoint",
+																	"type": "Expression"
+																},
+																"TargetFolder": {
+																	"value": "@item().TargetFolder",
+																	"type": "Expression"
+																},
+																"LoadType": {
+																	"value": "@item().LoadType",
+																	"type": "Expression"
+																},
+																"LastWatermark": {
+																	"value": "@string(item().LastWatermark)",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_OnPrem_Copy')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_AzureSQL_Copy')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_API_Copy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_OnPrem_Copy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy_OnPrem",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Lookup_LogStart",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@if(\n  equals(pipeline().parameters.LoadType, 'FULL'),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    ']'\n  ),\n  concat(\n    'SELECT * FROM [',\n    pipeline().parameters.SchemaName,\n    '].[',\n    pipeline().parameters.SourceTable,\n    '] WHERE [',\n    pipeline().parameters.WatermarkColumn,\n    '] > ''',\n    pipeline().parameters.LastWatermark,\n    ''''\n  )\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": {
+										"value": "@pipeline().parameters.SchemaName",
+										"type": "Expression"
+									},
+									"TableName": {
+										"value": "@pipeline().parameters.SourceTable",
+										"type": "Expression"
+									},
+									"ServerName": {
+										"value": "@pipeline().parameters.ServerName",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "@pipeline().parameters.DatabaseName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_ADLS_Parquet",
+								"type": "DatasetReference",
+								"parameters": {
+									"ContainerName": "landing",
+									"FolderPath": {
+										"value": "@concat(\n    pipeline().parameters.TargetFolder,\n    '/year=', formatDateTime(utcNow(),'yyyy'),\n    '/month=', formatDateTime(utcNow(),'MM'),\n    '/day=', formatDateTime(utcNow(),'dd')\n)",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Lookup_LogStart",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n    'EXEC dbo.usp_LogStart ',\n    '@PipelineRunId = ''', pipeline().RunId, ''', ',\n    '@PipelineName = ''PL_OnPrem_Copy'', ',\n    '@MetadataId = ', string(pipeline().parameters.MetadataId),\n    ', @PreviousWatermark = NULL;'\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": {
+										"value": "dbo",
+										"type": "Expression"
+									},
+									"ServerName": {
+										"value": "localhost\\SQLEXPRESS",
+										"type": "Expression"
+									},
+									"DatabaseName": {
+										"value": "ADF_Control_DB",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					{
+						"name": "Lookup_Log_Success",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Lookup_GetCurrentWatermark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@if(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "dbo",
+									"TableName": "SalesOrderHeader",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "ADF_Control_DB"
+								}
+							}
+						}
+					},
+					{
+						"name": "Lookup_GetCurrentWatermark",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy_OnPrem",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "Sales",
+									"TableName": "SalesOrderHeader",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "AdventureWorks"
+								}
+							}
+						}
+					},
+					{
+						"name": "Lookup_LogError",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy_OnPrem",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": {
+									"value": "@concat(\n'EXEC dbo.usp_LogError ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@ProcessLogId = ',string(activity('Lookup_LogStart').output.firstRow.ProcessLogId),', ',\n'@ErrorType = ''CopyFailure'', ',\n'@ErrorMessage = ''Copy_OnPrem failed'';'\n)",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DS_OnPrem_SQL",
+								"type": "DatasetReference",
+								"parameters": {
+									"SchemaName": "dbo",
+									"ServerName": "localhost\\SQLEXPRESS",
+									"DatabaseName": "ADF_Control_DB"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"MetadataId": {
+						"type": "string"
+					},
+					"ServerName": {
+						"type": "string"
+					},
+					"DatabaseName": {
+						"type": "string"
+					},
+					"SchemaName": {
+						"type": "string"
+					},
+					"SourceTable": {
+						"type": "string"
+					},
+					"TargetFolder": {
+						"type": "string"
+					},
+					"LoadType": {
+						"type": "string"
+					},
+					"WatermarkColumn": {
+						"type": "string"
+					},
+					"LastWatermark": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]",
+				"[concat(variables('factoryId'), '/datasets/DS_ADLS_Parquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_ADLS_Parquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_ADLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"ContainerName": {
+						"type": "string"
+					},
+					"FolderPath": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().FolderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().ContainerName",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_ADLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_Azure_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Azure_SQL",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": {
+							"value": "@dataset().ServerName",
+							"type": "Expression"
+						},
+						"DatabaseName": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "Sales"
+					},
+					"TableName": {
+						"type": "string",
+						"defaultValue": "Customer"
+					},
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "azure-sql-0.database.windows.net"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "AdventureWorksAzure"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_Azure_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_OnPrem_SQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_OnPrem_SQL",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ServerName": {
+							"value": "@dataset().ServerName",
+							"type": "Expression"
+						},
+						"DatabaseName": {
+							"value": "@dataset().DatabaseName",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"SchemaName": {
+						"type": "string",
+						"defaultValue": "Sales"
+					},
+					"TableName": {
+						"type": "string",
+						"defaultValue": "SalesOrderHeader"
+					},
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "localhost\\SQLEXPRESS"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "AdventureWorks"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SchemaName",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_OnPrem_SQL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS_REST_API')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_REST_API",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "/v6/latest/USD"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LS_REST_API')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_ADLS')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LS_ADLS_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LS_ADLS_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Azure_SQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "azure-sql-0.database.windows.net"
+					},
+					"DatabaseName": {
+						"type": "string",
+						"defaultValue": "AdventureWorksAzure"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('LS_Azure_SQL_properties_typeProperties_server')]",
+					"database": "[parameters('LS_Azure_SQL_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('LS_Azure_SQL_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_Azure_SQL_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_Databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405618921933038.18.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('LS_Databricks_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_D4s_v3",
+					"newClusterNumOfWorker": "1",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "18.x-scala2.13",
+					"clusterOption": "Fixed",
+					"newClusterInitScripts": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_OnPrem_SQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ServerName": {
+						"type": "string",
+						"defaultValue": "localhost\\SQLEXPRESS"
+					},
+					"DatabaseName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('LS_OnPrem_SQL_properties_typeProperties_server')]",
+					"database": "[parameters('LS_OnPrem_SQL_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": true,
+					"authenticationType": "Windows",
+					"userName": "[parameters('LS_OnPrem_SQL_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('LS_OnPrem_SQL_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SHIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SHIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_REST_API')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('LS_REST_API_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SHIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
 		}
 	]
 }
