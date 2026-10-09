@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "EXEC dbo.usp_GetConfig;",
+						"sqlReaderQuery": "EXEC dbo.usp_GetConfig @SequenceNo = 3;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -82,18 +82,42 @@
 													},
 													"waitOnCompletion": true,
 													"parameters": {
-														"MetadataId": "@string(item().MetadataId)",
-														"ServerName": "@item().ServerName",
-														"DatabaseName": "@item().DatabaseName",
-														"SchemaName": "@item().SchemaName",
-														"SourceTable": "@item().SourceTable",
+														"MetadataId": {
+															"value": "@string(item().MetadataId)",
+															"type": "Expression"
+														},
+														"ServerName": {
+															"value": "@item().ServerName",
+															"type": "Expression"
+														},
+														"DatabaseName": {
+															"value": "@item().DatabaseName",
+															"type": "Expression"
+														},
+														"SchemaName": {
+															"value": "@item().SchemaName",
+															"type": "Expression"
+														},
+														"SourceTable": {
+															"value": "@item().SourceTable",
+															"type": "Expression"
+														},
 														"TargetFolder": {
 															"value": "@item().TargetFolder",
 															"type": "Expression"
 														},
-														"LoadType": "@item().LoadType",
-														"WatermarkColumn": "@item().WatermarkColumn",
-														"LastWatermark": "@string(item().LastWatermark)"
+														"LoadType": {
+															"value": "@item().LoadType",
+															"type": "Expression"
+														},
+														"WatermarkColumn": {
+															"value": "@item().WatermarkColumn",
+															"type": "Expression"
+														},
+														"LastWatermark": {
+															"value": "@string(item().LastWatermark)",
+															"type": "Expression"
+														}
 													}
 												}
 											}
@@ -117,18 +141,42 @@
 													},
 													"waitOnCompletion": true,
 													"parameters": {
-														"MetadataId": "@string(item().MetadataId)",
-														"ServerName": "@item().ServerName",
-														"DatabaseName": "@item().DatabaseName",
-														"SchemaName": "@item().SchemaName",
-														"SourceTable": "@item().SourceTable",
+														"MetadataId": {
+															"value": "@string(item().MetadataId)",
+															"type": "Expression"
+														},
+														"ServerName": {
+															"value": "@item().ServerName",
+															"type": "Expression"
+														},
+														"DatabaseName": {
+															"value": "@item().DatabaseName",
+															"type": "Expression"
+														},
+														"SchemaName": {
+															"value": "@item().SchemaName",
+															"type": "Expression"
+														},
+														"SourceTable": {
+															"value": "@item().SourceTable",
+															"type": "Expression"
+														},
 														"TargetFolder": {
 															"value": "@item().TargetFolder",
 															"type": "Expression"
 														},
-														"LoadType": "@item().LoadType",
-														"WatermarkColumn": "@item().WatermarkColumn",
-														"LastWatermark": "@string(item().LastWatermark)"
+														"LoadType": {
+															"value": "@item().LoadType",
+															"type": "Expression"
+														},
+														"WatermarkColumn": {
+															"value": "@item().WatermarkColumn",
+															"type": "Expression"
+														},
+														"LastWatermark": {
+															"value": "@string(item().LastWatermark)",
+															"type": "Expression"
+														}
 													}
 												}
 											}
@@ -152,14 +200,26 @@
 													},
 													"waitOnCompletion": true,
 													"parameters": {
-														"MetadataId": "@string(item().MetadataId)",
-														"SourceEndpoint": "@item().SourceEndpoint",
+														"MetadataId": {
+															"value": "@string(item().MetadataId)",
+															"type": "Expression"
+														},
+														"SourceEndpoint": {
+															"value": "@item().SourceEndpoint",
+															"type": "Expression"
+														},
 														"TargetFolder": {
 															"value": "@item().TargetFolder",
 															"type": "Expression"
 														},
-														"LoadType": "@item().LoadType",
-														"LastWatermark": "@string(item().LastWatermark)"
+														"LoadType": {
+															"value": "@item().LoadType",
+															"type": "Expression"
+														},
+														"LastWatermark": {
+															"value": "@string(item().LastWatermark)",
+															"type": "Expression"
+														}
 													}
 												}
 											}
