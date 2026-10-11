@@ -108,7 +108,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_OnPrem_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ',\nif(\n  empty(pipeline().parameters.LastWatermark),\n  'NULL',\n  concat('''',string(pipeline().parameters.LastWatermark),'''')\n),\n';'\n)",
+							"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_AzureSQL_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -122,6 +122,7 @@
 								"value": "dbo",
 								"type": "Expression"
 							},
+							"TableName": "SalesOrderHeader",
 							"ServerName": {
 								"value": "localhost\\SQLEXPRESS",
 								"type": "Expression"
