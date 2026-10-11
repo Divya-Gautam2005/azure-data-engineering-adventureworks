@@ -1811,6 +1811,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
+									"TableName": "SalesOrderHeader",
 									"ServerName": "localhost\\SQLEXPRESS",
 									"DatabaseName": "ADF_Control_DB"
 								}
@@ -2213,6 +2214,33 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Notebook1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "ForEach_config",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/New Notebook 2026-10-09 17:23:55"
+						},
+						"linkedServiceName": {
+							"referenceName": "LS_Databricks",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
@@ -2222,6 +2250,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_Databricks')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_OnPrem_Copy')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_AzureSQL_Copy')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_API_Copy')]"
@@ -2339,7 +2368,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "@concat(\n'EXEC dbo.usp_LogStart @PipelineRunId = ''',\npipeline().RunId,\n''', @PipelineName = ''PL_OnPrem_Copy'', @MetadataId = ',\nstring(pipeline().parameters.MetadataId),\n', @PreviousWatermark = ',\nif(\n    empty(pipeline().parameters.LastWatermark),\n    'NULL',\n    concat('''', string(pipeline().parameters.LastWatermark), '''')\n),\n';'\n)",
+									"value": "@concat(\n'EXEC dbo.usp_LogStart ',\n'@PipelineRunId = ''',pipeline().RunId,''', ',\n'@PipelineName = ''PL_AzureSQL_Copy'', ',\n'@MetadataId = ',string(pipeline().parameters.MetadataId),', ',\n'@PreviousWatermark = ''',string(pipeline().parameters.LastWatermark), ''';'\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2353,6 +2382,7 @@
 										"value": "dbo",
 										"type": "Expression"
 									},
+									"TableName": "SalesOrderHeader",
 									"ServerName": {
 										"value": "localhost\\SQLEXPRESS",
 										"type": "Expression"
@@ -2388,7 +2418,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "@if(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n)",
+									"value": "@concat(\n'EXEC dbo.usp_LogEnd @ProcessLogId = ',\nstring(activity('Lookup_LogStart').output.firstRow.ProcessLogId),\n', @Status = ''Success'', ',\n'@RowsRead = ',string(activity('Copy_OnPrem').output.rowsRead),\n', @RowsWritten = ',string(activity('Copy_OnPrem').output.rowsCopied),\n', @CurrentWatermark = ',\nif(\n    empty(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n    'NULL',\n    concat(\n        '''',\n        string(activity('Lookup_GetCurrentWatermark').output.firstRow.CurrentWatermark),\n        ''''\n    )\n),\n';'\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -2429,7 +2459,7 @@
 							"source": {
 								"type": "SqlServerSource",
 								"sqlReaderQuery": {
-									"value": "@concat(\n'SELECT MAX([',pipeline().parameters.WatermarkColumn,\n']) AS CurrentWatermark FROM [',\npipeline().parameters.SchemaName,'].[',\npipeline().parameters.SourceTable,\n'] WHERE [',pipeline().parameters.WatermarkColumn,\n'] > ''',string(pipeline().parameters.LastWatermark),''''\n)",
+									"value": "@if(\n    empty(pipeline().parameters.WatermarkColumn),\n    'SELECT CAST(NULL AS DATETIME2) AS CurrentWatermark',\n    concat(\n        'SELECT MAX([', pipeline().parameters.WatermarkColumn,\n        ']) AS CurrentWatermark FROM [',\n        pipeline().parameters.SchemaName, '].[',\n        pipeline().parameters.SourceTable, ']'\n    )\n)",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
