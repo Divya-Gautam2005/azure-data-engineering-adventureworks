@@ -1531,11 +1531,11 @@
 								"parameters": {
 									"ContainerName": "landing",
 									"FolderPath": {
-										"value": "@concat(\r\n    pipeline().parameters.TargetFolder,\r\n    '/year=', formatDateTime(utcNow(),'yyyy'),\r\n    '/month=', formatDateTime(utcNow(),'MM'),\r\n    '/day=', formatDateTime(utcNow(),'dd')\r\n)",
+										"value": "@concat(\n    pipeline().parameters.TargetFolder,\n    '/year=', formatDateTime(utcNow(),'yyyy'),\n    '/month=', formatDateTime(utcNow(),'MM'),\n    '/day=', formatDateTime(utcNow(),'dd')\n)",
 										"type": "Expression"
 									},
 									"FileName": {
-										"value": "@concat('exchange_rates_',pipeline().RunId,'.parquet')",
+										"value": "@concat(\n    'exchange_rates_',\n    pipeline().parameters.MasterRunId,\n    '.parquet'\n)",
 										"type": "Expression"
 									}
 								}
@@ -1684,6 +1684,9 @@
 					},
 					"LastWatermark": {
 						"type": "string"
+					},
+					"MasterRunId": {
+						"type": "string"
 					}
 				},
 				"annotations": []
@@ -1779,7 +1782,10 @@
 								"parameters": {
 									"ContainerName": "landing",
 									"FolderPath": "@concat(     pipeline().parameters.TargetFolder,     '/year=', formatDateTime(utcNow(),'yyyy'),     '/month=', formatDateTime(utcNow(),'MM'),     '/day=', formatDateTime(utcNow(),'dd') )",
-									"FileName": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')"
+									"FileName": {
+										"value": "@concat(\n    pipeline().parameters.SourceTable,\n    '_',\n    pipeline().parameters.MasterRunId,\n    '.parquet'\n)",
+										"type": "Expression"
+									}
 								}
 							}
 						]
@@ -1970,6 +1976,9 @@
 					},
 					"LastWatermark": {
 						"type": "string"
+					},
+					"MasterRunId": {
+						"type": "string"
 					}
 				},
 				"annotations": []
@@ -2001,7 +2010,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "EXEC dbo.usp_GetConfig @SequenceNo = 3;",
+								"sqlReaderQuery": "EXEC dbo.usp_GetConfig ;",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -2101,6 +2110,10 @@
 																"LastWatermark": {
 																	"value": "@string(item().LastWatermark)",
 																	"type": "Expression"
+																},
+																"MasterRunId": {
+																	"value": "@pipeline().RunId",
+																	"type": "Expression"
 																}
 															}
 														}
@@ -2160,6 +2173,10 @@
 																"LastWatermark": {
 																	"value": "@string(item().LastWatermark)",
 																	"type": "Expression"
+																},
+																"MasterRunId": {
+																	"value": "@pipeline().RunId",
+																	"type": "Expression"
 																}
 															}
 														}
@@ -2203,6 +2220,10 @@
 																"LastWatermark": {
 																	"value": "@string(item().LastWatermark)",
 																	"type": "Expression"
+																},
+																"MasterRunId": {
+																	"value": "@pipeline().RunId",
+																	"type": "Expression"
 																}
 															}
 														}
@@ -2216,7 +2237,7 @@
 						}
 					},
 					{
-						"name": "Notebook1",
+						"name": "Notebook_Bronze",
 						"type": "DatabricksNotebook",
 						"dependsOn": [
 							{
@@ -2235,7 +2256,17 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/New Notebook 2026-10-09 17:23:55"
+							"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/Bronze_Ingestion",
+							"baseParameters": {
+								"master_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"metadata_json": {
+									"value": "@string(activity('Lookup_Config').output.value)",
+									"type": "Expression"
+								}
+							}
 						},
 						"linkedServiceName": {
 							"referenceName": "LS_Databricks",
@@ -2547,6 +2578,9 @@
 						"type": "string"
 					},
 					"LastWatermark": {
+						"type": "string"
+					},
+					"MasterRunId": {
 						"type": "string"
 					}
 				},
