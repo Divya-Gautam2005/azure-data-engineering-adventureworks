@@ -232,7 +232,7 @@
 				}
 			},
 			{
-				"name": "Notebook1",
+				"name": "Notebook_Bronze",
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
@@ -251,7 +251,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/New Notebook 2026-10-09 17:23:55"
+					"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/Bronze_Ingestion"
 				},
 				"linkedServiceName": {
 					"referenceName": "LS_Databricks",
