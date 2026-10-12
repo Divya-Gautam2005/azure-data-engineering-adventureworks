@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "EXEC dbo.usp_GetConfig ;",
+						"sqlReaderQuery": "EXEC dbo.usp_GetConfig\n    @SequenceNo = 1,\n    @ProcessId = 1;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
