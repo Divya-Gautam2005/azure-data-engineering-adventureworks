@@ -276,7 +276,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "LS_Databricks",
+					"referenceName": "LS_AzureDatabricks",
 					"type": "LinkedServiceReference"
 				}
 			}
