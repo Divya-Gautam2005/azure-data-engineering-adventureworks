@@ -1466,7 +1466,7 @@
 						"parameters": {
 							"ContainerName": "landing",
 							"FolderPath": {
-								"value": "@concat(\r\n    pipeline().parameters.TargetFolder,\r\n    '/year=', formatDateTime(utcNow(),'yyyy'),\r\n    '/month=', formatDateTime(utcNow(),'MM'),\r\n    '/day=', formatDateTime(utcNow(),'dd')\r\n)",
+								"value": "@concat(\n    pipeline().parameters.TargetFolder,\n    '/year=', formatDateTime(utcNow(),'yyyy'),\n    '/month=', formatDateTime(utcNow(),'MM'),\n    '/day=', formatDateTime(utcNow(),'dd')\n)",
 								"type": "Expression"
 							},
 							"FileName": {
