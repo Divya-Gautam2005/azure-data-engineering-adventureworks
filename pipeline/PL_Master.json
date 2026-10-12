@@ -263,7 +263,13 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/Bronze_Ingestion"
+					"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/Bronze_Ingestion",
+					"baseParameters": {
+						"master_run_id": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "LS_Databricks",
