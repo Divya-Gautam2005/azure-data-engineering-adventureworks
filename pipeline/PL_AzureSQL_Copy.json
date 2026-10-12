@@ -81,7 +81,10 @@
 						"parameters": {
 							"ContainerName": "landing",
 							"FolderPath": "@concat(     pipeline().parameters.TargetFolder,     '/year=', formatDateTime(utcNow(),'yyyy'),     '/month=', formatDateTime(utcNow(),'MM'),     '/day=', formatDateTime(utcNow(),'dd') )",
-							"FileName": "@concat(pipeline().parameters.SourceTable,'_',pipeline().RunId,'.parquet')"
+							"FileName": {
+								"value": "@concat(\n    pipeline().parameters.SourceTable,\n    '_',\n    pipeline().parameters.MasterRunId,\n    '.parquet'\n)",
+								"type": "Expression"
+							}
 						}
 					}
 				]
@@ -268,6 +271,9 @@
 				"type": "string"
 			},
 			"LastWatermark": {
+				"type": "string"
+			},
+			"MasterRunId": {
 				"type": "string"
 			}
 		},

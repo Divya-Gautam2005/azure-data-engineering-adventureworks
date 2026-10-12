@@ -1470,7 +1470,7 @@
 								"type": "Expression"
 							},
 							"FileName": {
-								"value": "@concat('exchange_rates_',pipeline().RunId,'.parquet')",
+								"value": "@concat(\n    'exchange_rates_',\n    pipeline().parameters.MasterRunId,\n    '.parquet'\n)",
 								"type": "Expression"
 							}
 						}
@@ -1615,6 +1615,9 @@
 				"type": "string"
 			},
 			"LastWatermark": {
+				"type": "string"
+			},
+			"MasterRunId": {
 				"type": "string"
 			}
 		},

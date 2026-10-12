@@ -285,6 +285,9 @@
 			},
 			"LastWatermark": {
 				"type": "string"
+			},
+			"MasterRunId": {
+				"type": "string"
 			}
 		},
 		"annotations": []
