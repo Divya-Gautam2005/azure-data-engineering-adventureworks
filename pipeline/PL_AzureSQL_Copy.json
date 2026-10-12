@@ -198,6 +198,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
+							"TableName": "SalesOrderHeader",
 							"ServerName": "localhost\\SQLEXPRESS",
 							"DatabaseName": "ADF_Control_DB"
 						}
