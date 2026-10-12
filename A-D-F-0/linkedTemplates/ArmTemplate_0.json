@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'LS_Databricks'"
 		},
+		"LS_AzureDatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_AzureDatabricks'"
+		},
 		"LS_OnPrem_SQL_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_OnPrem_SQL'"
@@ -156,6 +160,31 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AzureDatabricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7405618921933038.18.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('LS_AzureDatabricks_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "1",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "13.3.x-scala2.12",
+					"clusterOption": "Fixed",
+					"newClusterInitScripts": []
+				}
 			},
 			"dependsOn": []
 		},
@@ -2211,6 +2240,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"SchemaName": "dbo",
+									"TableName": "SalesOrderHeader",
 									"ServerName": "localhost\\SQLEXPRESS",
 									"DatabaseName": "ADF_Control_DB"
 								}
@@ -2626,7 +2656,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlServerSource",
-								"sqlReaderQuery": "EXEC dbo.usp_GetConfig ;",
+								"sqlReaderQuery": "EXEC dbo.usp_GetConfig\n    @SequenceNo = 1,\n    @ProcessId = 1;",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -2885,7 +2915,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "LS_Databricks",
+							"referenceName": "LS_AzureDatabricks",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -2897,7 +2927,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/DS_OnPrem_SQL')]",
-				"[concat(variables('factoryId'), '/linkedServices/LS_Databricks')]",
+				"[concat(variables('factoryId'), '/linkedServices/LS_AzureDatabricks')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_OnPrem_Copy')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_AzureSQL_Copy')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_API_Copy')]"

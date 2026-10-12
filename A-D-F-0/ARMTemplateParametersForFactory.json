@@ -17,6 +17,9 @@
 		"LS_OnPrem_SQL_password": {
 			"value": ""
 		},
+		"LS_AzureDatabricks_accessToken": {
+			"value": ""
+		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"value": "https://divya00.dfs.core.windows.net/"
 		},

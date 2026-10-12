@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_OnPrem_SQL'"
 		},
+		"LS_AzureDatabricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_AzureDatabricks'"
+		},
 		"LS_ADLS_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://divya00.dfs.core.windows.net/"
@@ -90,6 +94,9 @@
 					},
 					"LS_Databricks_accessToken": {
 						"value": "[parameters('LS_Databricks_accessToken')]"
+					},
+					"LS_AzureDatabricks_accessToken": {
+						"value": "[parameters('LS_AzureDatabricks_accessToken')]"
 					},
 					"LS_OnPrem_SQL_password": {
 						"value": "[parameters('LS_OnPrem_SQL_password')]"
