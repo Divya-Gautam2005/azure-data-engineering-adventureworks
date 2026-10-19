@@ -242,43 +242,6 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Notebook_Bronze",
-				"type": "DatabricksNotebook",
-				"dependsOn": [
-					{
-						"activity": "ForEach_config",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"notebookPath": "/Workspace/Users/dg2305960@gmail.com/azure-data-engineering-adventureworks/Databricks/Bronze/Bronze_Ingestion",
-					"baseParameters": {
-						"master_run_id": {
-							"value": "@pipeline().RunId",
-							"type": "Expression"
-						},
-						"metadata_json": {
-							"value": "@string(activity('Lookup_Config').output.value)",
-							"type": "Expression"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "LS_AzureDatabricks",
-					"type": "LinkedServiceReference"
-				}
 			}
 		],
 		"annotations": []
