@@ -11,13 +11,7 @@
 		"LS_Azure_SQL_password": {
 			"value": ""
 		},
-		"LS_Databricks_accessToken": {
-			"value": ""
-		},
 		"LS_OnPrem_SQL_password": {
-			"value": ""
-		},
-		"LS_AzureDatabricks_accessToken": {
 			"value": ""
 		},
 		"LS_ADLS_properties_typeProperties_url": {
