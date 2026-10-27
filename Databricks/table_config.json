@@ -1,0 +1,1360 @@
+{
+  "scd_type": 2,
+  "scd_columns": {
+    "active": "is_active",
+    "effective_from": "effective_from",
+    "effective_to": "effective_to"
+  },
+  "source_folder_map": {
+    "onprem": "onprem",
+    "azuresql": "azuresql",
+    "api": "api"
+  },
+  "tables": [
+    {
+      "table_name": "customer",
+      "source_names": [
+        "azuresql",
+        "onprem"
+      ],
+      "primary_key": [
+        "CustomerID"
+      ],
+      "columns": [
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "CustomerID",
+          "type": "INT"
+        },
+        {
+          "name": "PersonID",
+          "type": "INT"
+        },
+        {
+          "name": "StoreID",
+          "type": "INT"
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INT"
+        },
+        {
+          "name": "AccountNumber",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "table_name": "employee",
+      "source_names": [
+        "azuresql"
+      ],
+      "primary_key": [
+        "BusinessEntityID"
+      ],
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INT"
+        },
+        {
+          "name": "NationalIDNumber",
+          "type": "STRING"
+        },
+        {
+          "name": "LoginID",
+          "type": "STRING"
+        },
+        {
+          "name": "OrganizationNode",
+          "type": "STRING"
+        },
+        {
+          "name": "OrganizationLevel",
+          "type": "INT"
+        },
+        {
+          "name": "JobTitle",
+          "type": "STRING"
+        },
+        {
+          "name": "BirthDate",
+          "type": "DATE"
+        },
+        {
+          "name": "MaritalStatus",
+          "type": "STRING"
+        },
+        {
+          "name": "Gender",
+          "type": "STRING"
+        },
+        {
+          "name": "HireDate",
+          "type": "DATE"
+        },
+        {
+          "name": "SalariedFlag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "VacationHours",
+          "type": "INT"
+        },
+        {
+          "name": "SickLeaveHours",
+          "type": "INT"
+        },
+        {
+          "name": "CurrentFlag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        }
+      ]
+    },
+    {
+      "table_name": "salesorderheader",
+      "source_names": [
+        "azuresql",
+        "onprem"
+      ],
+      "primary_key": [
+        "SalesOrderID"
+      ],
+      "columns": [
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "CustomerID",
+          "type": "INT"
+        },
+        {
+          "name": "TerritoryID",
+          "type": "INT"
+        },
+        {
+          "name": "AccountNumber",
+          "type": "STRING"
+        },
+        {
+          "name": "SalesOrderID",
+          "type": "INT"
+        },
+        {
+          "name": "RevisionNumber",
+          "type": "INT"
+        },
+        {
+          "name": "OrderDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "DueDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "ShipDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "Status",
+          "type": "INT"
+        },
+        {
+          "name": "OnlineOrderFlag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "SalesOrderNumber",
+          "type": "STRING"
+        },
+        {
+          "name": "PurchaseOrderNumber",
+          "type": "STRING"
+        },
+        {
+          "name": "SalesPersonID",
+          "type": "INT"
+        },
+        {
+          "name": "BillToAddressID",
+          "type": "INT"
+        },
+        {
+          "name": "ShipToAddressID",
+          "type": "INT"
+        },
+        {
+          "name": "ShipMethodID",
+          "type": "INT"
+        },
+        {
+          "name": "CreditCardID",
+          "type": "INT"
+        },
+        {
+          "name": "CreditCardApprovalCode",
+          "type": "STRING"
+        },
+        {
+          "name": "CurrencyRateID",
+          "type": "INT"
+        },
+        {
+          "name": "SubTotal",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "TaxAmt",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "Freight",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "TotalDue",
+          "type": "DECIMAL"
+        }
+      ]
+    },
+    {
+      "table_name": "person",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "BusinessEntityID"
+      ],
+      "columns": [
+        {
+          "name": "BusinessEntityID",
+          "type": "INT"
+        },
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "PersonType",
+          "type": "STRING"
+        },
+        {
+          "name": "NameStyle",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "Title",
+          "type": "STRING"
+        },
+        {
+          "name": "FirstName",
+          "type": "STRING"
+        },
+        {
+          "name": "MiddleName",
+          "type": "STRING"
+        },
+        {
+          "name": "LastName",
+          "type": "STRING"
+        },
+        {
+          "name": "Suffix",
+          "type": "STRING"
+        },
+        {
+          "name": "EmailPromotion",
+          "type": "INT"
+        },
+        {
+          "name": "AdditionalContactInfo",
+          "type": "STRING"
+        },
+        {
+          "name": "Demographics",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "table_name": "product",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "ProductID"
+      ],
+      "columns": [
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "ProductID",
+          "type": "INT"
+        },
+        {
+          "name": "Name",
+          "type": "STRING"
+        },
+        {
+          "name": "ProductNumber",
+          "type": "STRING"
+        },
+        {
+          "name": "MakeFlag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "FinishedGoodsFlag",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "Color",
+          "type": "STRING"
+        },
+        {
+          "name": "SafetyStockLevel",
+          "type": "INT"
+        },
+        {
+          "name": "ReorderPoint",
+          "type": "INT"
+        },
+        {
+          "name": "StandardCost",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "ListPrice",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "Size",
+          "type": "STRING"
+        },
+        {
+          "name": "SizeUnitMeasureCode",
+          "type": "STRING"
+        },
+        {
+          "name": "WeightUnitMeasureCode",
+          "type": "STRING"
+        },
+        {
+          "name": "Weight",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "DaysToManufacture",
+          "type": "INT"
+        },
+        {
+          "name": "ProductLine",
+          "type": "STRING"
+        },
+        {
+          "name": "Class",
+          "type": "STRING"
+        },
+        {
+          "name": "Style",
+          "type": "STRING"
+        },
+        {
+          "name": "ProductSubcategoryID",
+          "type": "INT"
+        },
+        {
+          "name": "ProductModelID",
+          "type": "INT"
+        },
+        {
+          "name": "SellStartDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "SellEndDate",
+          "type": "TIMESTAMP"
+        }
+      ]
+    },
+    {
+      "table_name": "productcategory",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "ProductCategoryID"
+      ],
+      "columns": [
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "Name",
+          "type": "STRING"
+        },
+        {
+          "name": "ProductCategoryID",
+          "type": "INT"
+        }
+      ]
+    },
+    {
+      "table_name": "productsubcategory",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "ProductSubcategoryID"
+      ],
+      "columns": [
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "Name",
+          "type": "STRING"
+        },
+        {
+          "name": "ProductSubcategoryID",
+          "type": "INT"
+        },
+        {
+          "name": "ProductCategoryID",
+          "type": "INT"
+        }
+      ]
+    },
+    {
+      "table_name": "purchaseorderdetail",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "PurchaseOrderID",
+        "PurchaseOrderDetailID"
+      ],
+      "columns": [
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "DueDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "ProductID",
+          "type": "INT"
+        },
+        {
+          "name": "PurchaseOrderID",
+          "type": "INT"
+        },
+        {
+          "name": "PurchaseOrderDetailID",
+          "type": "INT"
+        },
+        {
+          "name": "OrderQty",
+          "type": "INT"
+        },
+        {
+          "name": "UnitPrice",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "LineTotal",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "ReceivedQty",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "RejectedQty",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "StockedQty",
+          "type": "DECIMAL"
+        }
+      ]
+    },
+    {
+      "table_name": "purchaseorderheader",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "PurchaseOrderID"
+      ],
+      "columns": [
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "RevisionNumber",
+          "type": "INT"
+        },
+        {
+          "name": "OrderDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "ShipDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "Status",
+          "type": "INT"
+        },
+        {
+          "name": "ShipMethodID",
+          "type": "INT"
+        },
+        {
+          "name": "SubTotal",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "TaxAmt",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "Freight",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "TotalDue",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "PurchaseOrderID",
+          "type": "INT"
+        },
+        {
+          "name": "EmployeeID",
+          "type": "INT"
+        },
+        {
+          "name": "VendorID",
+          "type": "INT"
+        }
+      ]
+    },
+    {
+      "table_name": "salesorderdetail",
+      "source_names": [
+        "onprem"
+      ],
+      "primary_key": [
+        "SalesOrderID",
+        "SalesOrderDetailID"
+      ],
+      "columns": [
+        {
+          "name": "rowguid",
+          "type": "STRING"
+        },
+        {
+          "name": "ModifiedDate",
+          "type": "TIMESTAMP"
+        },
+        {
+          "name": "SalesOrderID",
+          "type": "INT"
+        },
+        {
+          "name": "ProductID",
+          "type": "INT"
+        },
+        {
+          "name": "OrderQty",
+          "type": "INT"
+        },
+        {
+          "name": "UnitPrice",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "LineTotal",
+          "type": "DECIMAL"
+        },
+        {
+          "name": "SalesOrderDetailID",
+          "type": "INT"
+        },
+        {
+          "name": "CarrierTrackingNumber",
+          "type": "STRING"
+        },
+        {
+          "name": "SpecialOfferID",
+          "type": "INT"
+        },
+        {
+          "name": "UnitPriceDiscount",
+          "type": "DECIMAL"
+        }
+      ]
+    },
+    {
+      "table_name": "exchangerates",
+      "source_names": [
+        "api"
+      ],
+      "primary_key": [
+        "base_code"
+      ],
+      "columns": [
+        {
+          "name": "result",
+          "type": "STRING"
+        },
+        {
+          "name": "provider",
+          "type": "STRING"
+        },
+        {
+          "name": "documentation",
+          "type": "STRING"
+        },
+        {
+          "name": "terms_of_use",
+          "type": "STRING"
+        },
+        {
+          "name": "time_last_update_unix",
+          "type": "LONG"
+        },
+        {
+          "name": "time_last_update_utc",
+          "type": "STRING"
+        },
+        {
+          "name": "time_next_update_unix",
+          "type": "LONG"
+        },
+        {
+          "name": "time_next_update_utc",
+          "type": "STRING"
+        },
+        {
+          "name": "time_eol_unix",
+          "type": "LONG"
+        },
+        {
+          "name": "base_code",
+          "type": "STRING"
+        },
+        {
+          "name": "USD",
+          "type": "LONG"
+        },
+        {
+          "name": "AED",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AFN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ALL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AMD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ANG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AOA",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ARS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AUD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AWG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "AZN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BAM",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BBD",
+          "type": "LONG"
+        },
+        {
+          "name": "BDT",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BGN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BHD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BIF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BMD",
+          "type": "LONG"
+        },
+        {
+          "name": "BND",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BOB",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BRL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BSD",
+          "type": "LONG"
+        },
+        {
+          "name": "BTN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BWP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BYN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "BZD",
+          "type": "LONG"
+        },
+        {
+          "name": "CAD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CDF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CHF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CLF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CLP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CNH",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CNY",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "COP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CRC",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CUP",
+          "type": "LONG"
+        },
+        {
+          "name": "CVE",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "CZK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "DJF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "DKK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "DOP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "DZD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "EGP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ERN",
+          "type": "LONG"
+        },
+        {
+          "name": "ETB",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "EUR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FJD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FKP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "FOK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GBP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GEL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GGP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GHS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GIP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GMD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GNF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GTQ",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "GYD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HKD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HNL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HRK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HTG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "HUF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "IDR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ILS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "IMP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "INR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "IQD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "IRR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ISK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "JEP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "JMD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "JOD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "JPY",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KES",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KGS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KHR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KID",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KMF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KRW",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KWD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KYD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "KZT",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "LAK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "LBP",
+          "type": "LONG"
+        },
+        {
+          "name": "LKR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "LRD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "LSL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "LYD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MAD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MDL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MGA",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MKD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MMK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MNT",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MOP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MRU",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MUR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MVR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MWK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MXN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MYR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "MZN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NAD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NGN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NIO",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NOK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NPR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "NZD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "OMR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PAB",
+          "type": "LONG"
+        },
+        {
+          "name": "PEN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PGK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PHP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PKR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PLN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "PYG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "QAR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RON",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RSD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RUB",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "RWF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SAR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SBD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SCR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SDG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SEK",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SGD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SHP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SLE",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SLL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SOS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SRD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SSP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "STN",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SYP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "SZL",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "THB",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TJS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TMT",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TND",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TOP",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TRY",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TTD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TVD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TWD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "TZS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "UAH",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "UGX",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "UYU",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "UZS",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "VES",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "VND",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "VUV",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "WST",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "XAF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "XCD",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "XCG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "XDR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "XOF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "XPF",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "YER",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ZAR",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ZMW",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ZWG",
+          "type": "DOUBLE"
+        },
+        {
+          "name": "ZWL",
+          "type": "DOUBLE"
+        }
+      ]
+    }
+  ]
+}
